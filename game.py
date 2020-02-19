@@ -2,6 +2,7 @@ import pygame
 import colors
 import images
 import sounds
+import player_module
 
 pygame.init()
 
@@ -21,52 +22,6 @@ FPS = 27
 
 #play background music
 pygame.mixer.music.play(-1)
-
-
-class Player(object):
-
-	def __init__(self,x,y,width,height):
-		self.x = x
-		self.y = y
-		self.width = width
-		self.height = height
-		self.speed = 5
-		self.jumping = False
-		self.jump_count = 10
-		self.left = False
-		self.right = True
-		self.walk_count = 0
-		self.standing = True
-		self.hitbox = (self.x+18,self.y+12,28,50)
-
-	def draw(self,display):
-
-		if self.walk_count + 1 >= 27:
-			self.walk_count = 0
-
-		if not self.standing:
-
-			if self.left:
-				game_display.blit(images.walk_left[self.walk_count//3], (self.x,self.y) )
-				self.walk_count += 1
-
-			elif self.right:
-				game_display.blit(images.walk_right[self.walk_count//3], (self.x,self.y) )
-				self.walk_count += 1
-
-		else: 
-
-			if self.right:
-				game_display.blit(images.walk_right[0], (self.x,self.y) )
-			else:
-				game_display.blit(images.walk_left[0], (self.x,self.y) )
-
-		#Set the position as the character walks
-		self.hitbox = (self.x+18,self.y+12,28,50)
-		
-	def hit(self):
-		pass
-
 
 
 class Projectile(object):
@@ -176,7 +131,7 @@ def draw_window():
 
 
 #Creating the characther
-john = Player(300,380,64,64)
+john = player_module.Player(300,380,64,64)
 #Creating enemy
 goblin = Enemy(100,385,64,64,screen_width-100)
 
@@ -198,7 +153,6 @@ while run:
 		#Deletes the bullet when hits the goblin
 		if bullet_hitbox.colliderect(goblin_hitbox):
 			bullets.pop(bullets.index(bullet))
-			score += 1
 			goblin.hit()
 			sounds.hit_sound.play()
 			
