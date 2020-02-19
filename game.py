@@ -4,6 +4,7 @@ import images
 import sounds
 import player_module
 import enemy_module
+import projectile_module
 
 pygame.init()
 
@@ -25,27 +26,6 @@ FPS = 27
 pygame.mixer.music.play(-1)
 
 
-class Projectile(object):
-	def __init__(self,x,y,radius,color,direction):
-		self.x = x
-		self.y = y
-		self.radius = radius
-		self.color = color
-		self.direction = direction
-		self.speed = 10 * direction
-		self.hitbox = (self.x,self.y,5,5)
-
-	def draw(self,display):	
-		pygame.draw.circle(game_display,self.color, (self.x,self.y) ,self.radius)
-
-		#Set the position as the bullet moves
-		self.hitbox = (self.x,self.y,5,5)
-
-	def get_projectile_hitbox(self):
-		return pygame.draw.rect(game_display,colors.red,self.hitbox)
-
-
-
 def draw_window():
 	game_display.blit(images.background, (0,0))
 	john.draw(game_display)
@@ -57,7 +37,6 @@ def draw_window():
 	pygame.display.update()
 
 
-
 #Creating the characther
 john = player_module.Player(300,380,64,64)
 #Creating enemy
@@ -65,17 +44,16 @@ goblin = enemy_module.Enemy(100,385,64,64,screen_width-100)
 
 bullets = []
 
-
 #Main loop
 run = True
 
 while run:
 	
 	
-		
+	#Bullet events
 	for bullet in bullets:
 
-		bullet_hitbox = bullet.get_projectile_hitbox()
+		bullet_hitbox = bullet.get_projectile_hitbox(game_display)
 		goblin_hitbox = goblin.get_enemy_hitbox(game_display)
 
 		#Deletes the bullet when hits the goblin
@@ -85,7 +63,6 @@ while run:
 			sounds.hit_sound.play()
 			
 
-
 		if bullet.x < screen_width and bullet.x > 0:
 			bullet.x += bullet.speed
 
@@ -93,6 +70,8 @@ while run:
 			#Deletes the bullet when is off screen
 			bullets.pop(bullets.index(bullet))
 
+
+	#User events
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			run = False
@@ -109,9 +88,10 @@ while run:
 				#Set the maximium bullets at the same time on the screen
 				if len(bullets) < 5:
 					sounds.bullet_sound.play()
-					bullets.append(Projectile( round(john.x+john.width//2) , round(john.y+john.height//2) ,5,colors.red,direction))
+					bullets.append(projectile_module.Projectile( round(john.x+john.width//2) , round(john.y+john.height//2) ,5,colors.red,direction))
 
 
+	#User pressed keys events
 	press = pygame.key.get_pressed()
 
 	if press[pygame.K_LEFT] and john.x > john.speed:
