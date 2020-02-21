@@ -8,12 +8,14 @@ import projectile_module
 
 pygame.init()
 
-#Screen size
-screen_width = 852
-screen_height = 480
+#Display size
+display_width = 852
+display_height = 480
 
-game_display = pygame.display.set_mode((screen_width,screen_height))
+#Draw display
+game_display = pygame.display.set_mode((display_width,display_height))
 
+#Game title
 pygame.display.set_caption('Learning')
 
 #Time object to work with Frames each Second
@@ -26,10 +28,11 @@ FPS = 27
 pygame.mixer.music.play(-1)
 
 
+
 def draw_window():
 	game_display.blit(images.background, (0,0))
-	john.draw(game_display)
-	goblin.draw(game_display)
+	john.draw()
+	goblin.draw()
 
 	for bullet in bullets:
 		bullet.draw(game_display)
@@ -38,9 +41,9 @@ def draw_window():
 
 
 #Creating the characther
-john = player_module.Player(300,380,64,64)
+john = player_module.Player(300,380,64,64,game_display,display_width,display_height)
 #Creating enemy
-goblin = enemy_module.Enemy(100,385,64,64,screen_width-100)
+goblin = enemy_module.Enemy(100,385,64,64,display_width-100,game_display)
 
 bullets = []
 
@@ -48,22 +51,34 @@ bullets = []
 run = True
 
 while run:
-	
+
+	#Create hitbox
+	player_hitbox = john.get_player_hitbox()
+	goblin_hitbox = goblin.get_enemy_hitbox()
+
+	#Check if the goblin is alive
+	if goblin.alive == True:
+		#Check if the player collides with the goblin
+		if player_hitbox.colliderect(goblin_hitbox):
+			john.hit()
+
 	
 	#Bullet events
 	for bullet in bullets:
-
+		
+		#Create hitbox
 		bullet_hitbox = bullet.get_projectile_hitbox(game_display)
-		goblin_hitbox = goblin.get_enemy_hitbox(game_display)
 
-		#Deletes the bullet when hits the goblin
-		if bullet_hitbox.colliderect(goblin_hitbox):
-			bullets.pop(bullets.index(bullet))
-			goblin.hit()
-			sounds.hit_sound.play()
+		#Check if the goblin is alive
+		if goblin.alive == True:
+			#Deletes the bullet when hits the goblin
+			if bullet_hitbox.colliderect(goblin_hitbox):
+				bullets.pop(bullets.index(bullet))
+				goblin.hit()
+				sounds.hit_sound.play()
 			
 
-		if bullet.x < screen_width and bullet.x > 0:
+		if bullet.x < display_width and bullet.x > 0:
 			bullet.x += bullet.speed
 
 		else: 
@@ -100,7 +115,7 @@ while run:
 		john.right = False
 		john.standing = False
 
-	elif press[pygame.K_RIGHT] and john.x < screen_width - john.width - john.speed:
+	elif press[pygame.K_RIGHT] and john.x < display_width - john.width - john.speed:
 		john.x += john.speed
 		john.right = True
 		john.left = False
