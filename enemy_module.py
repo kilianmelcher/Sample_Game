@@ -3,7 +3,6 @@ import images
 import colors
 
 
-
 class Enemy():
 
 	def __init__(self,x,y,width,height,end,display):
@@ -15,7 +14,7 @@ class Enemy():
 		self.path = [self.x,self.end]
 		self.walk_count = 0
 		self.speed = 3
-		self.hitbox = (self.x + 17, self.y+2,31,57)
+		self.hitbox = pygame.Rect(self.x + 17, self.y+2,31,57)
 		self.health = 10
 		self.alive = True
 		self.display = display
@@ -40,15 +39,13 @@ class Enemy():
 				self.walk_count += 1
 
 			#Set the position as the enemy walks
-			self.hitbox = (self.x + 17, self.y+2,31,57)
+			self.hitbox = pygame.Rect(self.x + 17, self.y+2,31,57)
 
 			#Draw life bar
-			pygame.draw.rect(self.display,colors.red, (self.hitbox[0],self.y - 20,50,10) )
-			pygame.draw.rect(self.display,colors.green, (self.hitbox[0],self.y - 20, self.health*5 ,10) )
+			pygame.draw.rect(self.display,colors.red, (self.x + 17,self.y - 20,50,10) )
+			pygame.draw.rect(self.display,colors.green, (self.x + 17,self.y - 20, self.health*5 ,10) )
 			
 
-	def get_enemy_hitbox(self):
-		return pygame.draw.rect(self.display,colors.red,self.hitbox)
 
 	def move(self):
 		if self.speed > 0:
@@ -68,6 +65,7 @@ class Enemy():
 			else:
 				self.speed *= -1
 				self.walk_count = 0
+
 
 	def hit(self):
 

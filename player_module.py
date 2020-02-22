@@ -17,7 +17,7 @@ class Player(object):
 		self.right = True
 		self.walk_count = 0
 		self.standing = True
-		self.hitbox = (self.x+18,self.y+12,28,50)
+		self.hitbox = pygame.Rect(self.x+18,self.y+12,28,50)
 		self.display_width = display_width
 		self.display_height = display_height
 		self.display = display
@@ -25,8 +25,6 @@ class Player(object):
 
 
 	def draw(self):
-
-
 
 		if self.walk_count + 1 >= 27:
 			self.walk_count = 0
@@ -49,7 +47,7 @@ class Player(object):
 				self.display.blit(images.walk_left[0], (self.x,self.y) )
 
 		#Set the position as the character walks
-		self.hitbox = (self.x+18,self.y+12,28,50)
+		self.hitbox = pygame.Rect(self.x+18,self.y+12,28,50)
 
 		functions.message_to_screen('Your life', self.display, colors.black, 80,30,14)
 
@@ -57,9 +55,6 @@ class Player(object):
 		pygame.draw.rect(self.display,colors.black, (28,48,104,24) )
 		pygame.draw.rect(self.display,colors.red, (30,50,100,20) )
 		pygame.draw.rect(self.display,colors.green, (30,50, self.health*10 ,20) )
-
-	def get_player_hitbox(self):
-		return pygame.draw.rect(self.display,colors.red,self.hitbox)
 
 		
 	def hit(self):
@@ -77,9 +72,6 @@ class Player(object):
 		self.y = 380
 		self.walk_count = 0
 
-		#functions.message_to_screen(self.display,'-5',colors.red,self.display_width//2,self.display_height//2)
 		pygame.display.update()
-
-		#pygame.time.delay(300)
 
 

@@ -52,27 +52,21 @@ run = True
 
 while run:
 
-	#Create hitbox
-	player_hitbox = john.get_player_hitbox()
-	goblin_hitbox = goblin.get_enemy_hitbox()
 
 	#Check if the goblin is alive
 	if goblin.alive == True:
 		#Check if the player collides with the goblin
-		if player_hitbox.colliderect(goblin_hitbox):
+		if john.hitbox.colliderect(goblin.hitbox):
 			john.hit()
 
 	
 	#Bullet events
 	for bullet in bullets:
-		
-		#Create hitbox
-		bullet_hitbox = bullet.get_projectile_hitbox(game_display)
 
 		#Check if the goblin is alive
 		if goblin.alive == True:
 			#Deletes the bullet when hits the goblin
-			if bullet_hitbox.colliderect(goblin_hitbox):
+			if bullet.hitbox.colliderect(goblin.hitbox):
 				bullets.pop(bullets.index(bullet))
 				goblin.hit()
 				sounds.hit_sound.play()
