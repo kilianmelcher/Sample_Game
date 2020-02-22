@@ -1,6 +1,7 @@
 import pygame
 import colors
 
+
 def message_to_screen(message,display,color,x,y,font_size=20):
 
 	#Set the font and the size
@@ -11,4 +12,6 @@ def message_to_screen(message,display,color,x,y,font_size=20):
 	text_rectangle = text.get_rect(center=(x, y)) 
 	#Print the text in the screen
 	display.blit(text, text_rectangle)
+
+
 

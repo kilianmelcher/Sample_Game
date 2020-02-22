@@ -22,6 +22,7 @@ class Player(object):
 		self.display_height = display_height
 		self.display = display
 		self.health = 10
+		self.alive = True
 
 
 	def draw(self):
@@ -65,7 +66,9 @@ class Player(object):
 		if self.health > 1:
 			self.health -= 1
 		else: 
-			pass
+			#Death
+			self.alive = False
+			
 
 		#When player collides with goblin, resets his prosition
 		self.x = 60
